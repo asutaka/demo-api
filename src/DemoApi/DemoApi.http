@@ -1,0 +1,25 @@
+@DemoApi_HostAddress = http://localhost:5128
+
+GET {{DemoApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{DemoApi_HostAddress}}/messages
+
+###
+
+POST {{DemoApi_HostAddress}}/publish
+
+###
+
+
+POST http://localhost:5000/order
+Content-Type: application/json
+
+{
+  "orderId": "123",
+  "product": "Book",
+  "quantity": 2
+}
+###

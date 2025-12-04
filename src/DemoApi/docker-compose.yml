@@ -1,0 +1,38 @@
+services:
+  demoapi:
+    build: .
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+      - rabbitmq
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__DefaultConnection: Host=db;Username=postgres;Password=postgres;Database=demo
+      RabbitHost: rabbitmq
+      RabbitUser: guest
+      RabbitPass: guest
+    networks:
+      - backend
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: demo
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - backend
+
+networks:
+  backend:
