@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demoapi
+  namespace: demo
 spec:
   replicas: 1
   selector:
@@ -13,11 +14,7 @@ spec:
         app: demoapi
     spec:
       containers:
-        - name: demoapi
-          image: demoapi:latest
-          imagePullPolicy: Never
-          ports:
-            - containerPort: 5000
-          env:
-            - name: ASPNETCORE_URLS
-              value: "http://+:5000"
+      - name: demoapi
+        image: ghcr.io/asutaka/demo-api:{{TAG}}
+        ports:
+        - containerPort: 5000

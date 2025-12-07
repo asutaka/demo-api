@@ -25,3 +25,17 @@ jobs:
 
     - name: Push image
       run: docker push ghcr.io/${{ github.actor }}/demo-api:latest
+      
+     
+    # ----- UPDATE YAML -----
+    - name: Update Deployment YAML with new image tag
+      run: |
+        sed -i "s#ghcr.io/.*/demo-api:.*#ghcr.io/${{ github.actor }}/demo-api:${{ env.TAG }}#g" k8s/deployment.yaml
+
+    - name: Commit YAML update
+      run: |
+        git config --global user.email "github-actions@users.noreply.github.com"
+        git config --global user.name "GitHub Actions"
+        git add k8s/deployment.yaml
+        git commit -m "Update image tag to ${{ env.TAG }}"
+        git push
