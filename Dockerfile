@@ -37,5 +37,6 @@ RUN apt-get update && apt-get install -y libgssapi-krb5-2
 WORKDIR /app
 COPY --from=publish /app/publish .
 
+ENV ASPNETCORE_URLS=http://+:5000
 EXPOSE 5000
 ENTRYPOINT ["dotnet", "DemoApi.dll"]
