@@ -5,7 +5,7 @@ on:
     branches: [ "master" ]
 
 permissions:
-  contents: read
+  contents: write
   packages: write
 
 jobs:
@@ -21,21 +21,19 @@ jobs:
           | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
     - name: Build image
-      run: docker build . -t ghcr.io/${{ github.actor }}/demo-api:latest
+      run: docker build . -t ghcr.io/${{ github.actor }}/demo-api:${{ github.run_number }}
 
     - name: Push image
-      run: docker push ghcr.io/${{ github.actor }}/demo-api:latest
-      
-     
-    # ----- UPDATE YAML -----
-    - name: Update Deployment YAML with new image tag
-      run: |
-        sed -i "s#ghcr.io/.*/demo-api:.*#ghcr.io/${{ github.actor }}/demo-api:${{ env.TAG }}#g" k8s/deployment.yaml
+      run: docker push ghcr.io/${{ github.actor }}/demo-api:${{ github.run_number }}
 
-    - name: Commit YAML update
+    - name: Update Kubernetes manifest with new image tag
+      run: |
+        sed -i "s#ghcr.io/.*/demo-api:.*#ghcr.io/${{ github.actor }}/demo-api:${{ github.run_number }}#g" k8s/deployment.yaml
+
+    - name: Commit and push changes
       run: |
         git config --global user.email "github-actions@users.noreply.github.com"
-        git config --global user.name "GitHub Actions"
+        git config --global user.name "github-actions[bot]"
         git add k8s/deployment.yaml
-        git commit -m "Update image tag to ${{ env.TAG }}"
+        git commit -m "Update image tag to ${{ github.run_number }}"
         git push
