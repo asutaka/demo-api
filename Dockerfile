@@ -30,6 +30,10 @@ RUN dotnet publish -c Release -o /app/publish
 #       RUNTIME STAGE
 # ============================
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+
+# Cài package thiếu
+RUN apt-get update && apt-get install -y libgssapi-krb5-2
+
 WORKDIR /app
 COPY --from=publish /app/publish .
 
