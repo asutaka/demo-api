@@ -11,10 +11,10 @@ EXPOSE 8080
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["API/DemoApi/DemoApi.csproj", "API/DemoApi/"]
-RUN dotnet restore "./API/DemoApi/DemoApi.csproj"
+COPY ["DemoApi/DemoApi.csproj", "DemoApi/"]
+RUN dotnet restore "./DemoApi/DemoApi.csproj"
 COPY . .
-WORKDIR "/src/API/DemoApi"
+WORKDIR "/DemoApi"
 RUN dotnet build "./DemoApi.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # This stage is used to publish the service project to be copied to the final stage
