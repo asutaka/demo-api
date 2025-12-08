@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: demoapi
-        image: ghcr.io/asutaka/demo-api:14
+        image: ghcr.io/asutaka/demo-api:15
         ports:
         - containerPort: 5000
