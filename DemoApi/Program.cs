@@ -42,7 +42,7 @@ await using (var conn = new NpgsqlConnection(pgConn))
         CREATE TABLE IF NOT EXISTS messages (
             id SERIAL PRIMARY KEY,
             content TEXT NOT NULL
-        )", conn);
+        )", conn);  
     await cmd.ExecuteNonQueryAsync();
 }
 
